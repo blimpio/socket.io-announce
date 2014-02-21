@@ -2,7 +2,7 @@ import json
 import uuid
 import redis
 
-import parser
+from .parser import encode_packet
 
 class Announce(object):
     def __init__(self, *args, **kwargs):
@@ -13,8 +13,13 @@ class Announce(object):
         db = kwargs.get('db', 0)
         password = kwargs.get('password', None)
 
-        self.client = redis.StrictRedis(
-            host=host, port=port, db=db, password=password)
+        self._debug_mode = kwargs.get('_debug_mode', False)
+
+        if self._debug_mode:
+            self.client = None
+        else:
+            self.client = redis.StrictRedis(
+                host=host, port=port, db=db, password=password)
 
         self.namespace = kwargs.get('namespace', '')
         self.room = ''
@@ -32,7 +37,7 @@ class Announce(object):
             'data': data
         }
 
-        self.packet(_packet)
+        return self.packet(_packet)
 
 
     def emit(self, event_name, data, room=None):
@@ -42,28 +47,29 @@ class Announce(object):
         packet = {
             'type': 'event',
             'name': event_name,
-            'args': data
+            'args': [data]
         }
 
-        self.packet(packet)
+        return self.packet(packet)
 
 
     def packet(self, packet):
         packet['endpoint'] = self.namespace
 
-        _packet = parser.encode_packet(packet)
+        _packet = encode_packet(packet)
         volatile = self.volatile
         exceptions = []
 
-        self.publish('dispatch', self.room, _packet, volatile, exceptions)
+        return self.publish('dispatch', self.room, _packet, volatile, exceptions)
 
 
     def publish(self, name, *args):
         pack = self.pack({'nodeId': self.node_id, 'args': args})
 
-        print(pack)
+        if not self._debug_mode:
+            self.client.publish(name, pack)
 
-        self.client.publish(name, pack)
+        return pack
 
 
 if __name__ == '__main__':
