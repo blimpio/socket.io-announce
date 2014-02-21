@@ -1,16 +1,20 @@
+"""
+Extracted from: http://bit.ly/1bSSOPx
+"""
+
 import json
 
-packets = [
-    'disconnect',
-    'connect',
-    'heartbeat',
-    'message',
-    'json',
-    'event',
-    'ack',
-    'error',
-    'noop'
-]
+packets = {
+    'disconnect': 0,
+    'connect': 1,
+    'heartbeat': 2,
+    'message': 3,
+    'json': 4,
+    'event': 5,
+    'ack': 6,
+    'error': 7,
+    'noop': 8
+  }
 
 reasons = [
     'transport not supported',
@@ -23,13 +27,17 @@ advice = [
 ]
 
 def encode_packet(packet):
-    packet_type = str(packets.index(packet['type']))
+    packet_type = str(packets[packet['type']])
     packet_id = str(packet.get('id', ''))
     packet_endpoint = packet.get('endpoint', '')
     packet_ack = packet.get('ack')
     packet_data = None
 
-    if packet['type'] == 'event':
+    if packet['type'] == 'message':
+        if packet_data != '':
+            packet_data = packet['data']
+
+    elif packet['type'] == 'event':
         ev = {'name': packet['name']}
 
         if packet['args'] and len(packet['args']):
