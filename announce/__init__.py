@@ -23,7 +23,10 @@ class Announce(object):
         self.pack = json.dumps
 
 
-    def send(self, data):
+    def send(self, data, room=None):
+        if room:
+            self.room = '/'.join([self.namespace, room])
+
         _packet = {
             'type': 'message',
             'data': data
@@ -32,9 +35,9 @@ class Announce(object):
         self.packet(_packet)
 
 
-    def emit(self, event_name, data, to=None):
-        if to:
-            self.room = '/'.join([self.namespace, to])
+    def emit(self, event_name, data, room=None):
+        if room:
+            self.room = '/'.join([self.namespace, room])
 
         packet = {
             'type': 'event',
@@ -69,11 +72,13 @@ if __name__ == '__main__':
     """
     a = Announce()
     a.emit('alert', {'msg': 'This is Hello'})
+    a.emit('alert', {'msg': 'This is Hello'}, room='room')
     a.send('Alow')
-    a.emit('alert', {'msg': 'This is Hello'}, to='room')
+    a.send('Alow', room='room')
 
     b = Announce(namespace='/namespace')
     b.emit('alert', {'msg': 'This is Hello'})
+    b.emit('alert', {'msg': 'This is Hello'}, room='room')
     b.send('Alow')
-    b.emit('alert', {'msg': 'This is Hello'}, to='room')
+    b.send('Alow', room='room')
 
