@@ -17,6 +17,9 @@ setup(
     keywords='websockets nodejs socket.io socketio',
     url='http://github.com/gcollazo/socket.io-announce',
     packages=['announce'],
+    install_requires=[
+        'redis>=2.9.1',
+    ],
     long_description=long_description,
     classifiers=[
         'Development Status :: 3 - Alpha',
