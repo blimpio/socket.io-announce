@@ -8,6 +8,7 @@ import redis
 
 from announce.packet import encode as encode_packet
 
+
 class Announce(object):
     def __init__(self, *args, **kwargs):
         self.node_id = str(int(uuid.uuid4()))[:9]
@@ -16,6 +17,7 @@ class Announce(object):
         port = kwargs.get('port', 6379)
         db = kwargs.get('db', 0)
         password = kwargs.get('password', None)
+        json_dumps = kwargs.get('json_dumps', json.dumps)
 
         self._test_mode = kwargs.get('_test_mode', False)
 
@@ -31,7 +33,7 @@ class Announce(object):
         self.room = ''
         self.volatile = None
 
-        self.pack = json.dumps
+        self.pack = json_dumps
 
 
     def send(self, data, room=None):
@@ -66,7 +68,7 @@ class Announce(object):
     def packet(self, packet):
         packet['endpoint'] = self.namespace if self.namespace != '' else ''
 
-        _packet = encode_packet(packet)
+        _packet = encode_packet(packet, json_dumps=self.pack)
         volatile = self.volatile
         exceptions = []
 
@@ -92,10 +94,8 @@ if __name__ == '__main__':
     a.send('Alow')
     a.send('Alow', room='room')
 
-
     b = Announce(namespace='/namespace')
     b.emit('alert', {'msg': 'This is Hello'})
     b.emit('alert', {'msg': 'This is Hello'}, room='room')
     b.send('Alow')
     b.send('Alow', room='room')
-

@@ -1,10 +1,12 @@
 import unittest
 import json
 import logging
+import datetime
 
 log = logging.getLogger(__name__)
 
 from announce import Announce
+
 
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
@@ -185,6 +187,40 @@ class TestAnnounce(BaseTestCase):
         }
 
         result_text = self.announce.emit('message', {'user': '@dshaw'}, room='room')
+
+        self.compare_payloads(expected, result_text)
+        self.check_json_payload(expected, result_text)
+
+
+    def test_custom_json_dumps_callable(self):
+
+        class CustomJSONEncoder(json.JSONEncoder):
+            def default(self, o):
+                if isinstance(o, datetime.date):
+                    return o.isoformat()
+                return super(CustomJSONEncoder, self).default(o)
+
+        def custom_json_dumps(data):
+            return json.dumps(data, cls=CustomJSONEncoder)
+
+        self.announce = Announce(_test_mode=True, namespace='namespace',
+                                 json_dumps=custom_json_dumps)
+
+        expected = {
+            'nodeId': 149241983,
+            'args': [
+                '/namespace/room',
+                '5::/namespace:{"name":"message","args":[{"datetime":"2014-02-24T18:01:53.395214"}]}',
+                None,
+                []
+            ]
+        }
+
+        data = {
+            'datetime': datetime.datetime(2014, 2, 24, 18, 1, 53, 395214)
+        }
+
+        result_text = self.announce.emit('message', data, room='room')
 
         self.compare_payloads(expected, result_text)
         self.check_json_payload(expected, result_text)
