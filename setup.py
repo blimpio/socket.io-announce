@@ -9,7 +9,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 
 setup(
     name='socket.io-announce',
-    version='0.0.2',
+    version='0.0.3',
     author='Giovanni Collazo',
     author_email='hello@gcollazo.com',
     description='Socket.io multi-process announcement channel ported to Python',
