@@ -168,6 +168,7 @@ class TestAnnounce(BaseTestCase):
         result_text = self.announce.emit('message', {'user': '@dshaw'})
 
         self.compare_payloads(expected, result_text)
+        self.check_json_payload(expected, result_text)
 
 
     def test_emit_in_namespace_with_room(self):
@@ -186,6 +187,7 @@ class TestAnnounce(BaseTestCase):
         result_text = self.announce.emit('message', {'user': '@dshaw'}, room='room')
 
         self.compare_payloads(expected, result_text)
+        self.check_json_payload(expected, result_text)
 
 
 if __name__ == '__main__':
