@@ -21,7 +21,9 @@ class Announce(object):
             self.client = redis.StrictRedis(
                 host=host, port=port, db=db, password=password)
 
-        self.namespace = kwargs.get('namespace', '')
+        _namespace = kwargs.get('namespace', '')
+        self.namespace = '/{0}'.format(_namespace) if _namespace != '' else ''
+
         self.room = ''
         self.volatile = None
 
@@ -30,7 +32,9 @@ class Announce(object):
 
     def send(self, data, room=None):
         if room:
-            self.room = '/'.join([self.namespace, room])
+            self.room = self.namespace + '/{0}'.format(room)
+        elif self.namespace:
+            self.room = self.namespace
 
         _packet = {
             'type': 'message',
@@ -42,7 +46,9 @@ class Announce(object):
 
     def emit(self, event_name, data, room=None):
         if room:
-            self.room = '/'.join([self.namespace, room])
+            self.room = self.namespace + '/{0}'.format(room)
+        elif self.namespace:
+            self.room = self.namespace
 
         packet = {
             'type': 'event',
@@ -54,7 +60,7 @@ class Announce(object):
 
 
     def packet(self, packet):
-        packet['endpoint'] = self.namespace
+        packet['endpoint'] = self.namespace if self.namespace != '' else ''
 
         _packet = encode_packet(packet)
         volatile = self.volatile
