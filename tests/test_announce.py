@@ -117,7 +117,7 @@ class TestAnnounce(BaseTestCase):
 
 
     def test_send_in_namespace(self):
-        self.announce = Announce(namespace='namespace')
+        self.announce = Announce(_debug_mode=True, namespace='namespace')
 
         expected = {
             'nodeId': 149241983,
@@ -135,7 +135,7 @@ class TestAnnounce(BaseTestCase):
 
 
     def test_send_in_namespace_with_room(self):
-        self.announce = Announce(namespace='namespace')
+        self.announce = Announce(_debug_mode=True, namespace='namespace')
 
         expected = {
             'nodeId': 149241983,
@@ -172,7 +172,7 @@ class TestAnnounce(BaseTestCase):
 
 
     def test_emit_in_namespace_with_room(self):
-        self.announce = Announce(namespace='namespace')
+        self.announce = Announce(_debug_mode=True, namespace='namespace')
 
         expected = {
             'nodeId': 149241983,
