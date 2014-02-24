@@ -13,9 +13,9 @@ class Announce(object):
         db = kwargs.get('db', 0)
         password = kwargs.get('password', None)
 
-        self._debug_mode = kwargs.get('_debug_mode', False)
+        self._test_mode = kwargs.get('_test_mode', False)
 
-        if self._debug_mode:
+        if self._test_mode:
             self.client = None
         else:
             self.client = redis.StrictRedis(
@@ -72,7 +72,7 @@ class Announce(object):
     def publish(self, name, *args):
         pack = self.pack({'nodeId': self.node_id, 'args': args})
 
-        if not self._debug_mode:
+        if not self._test_mode:
             self.client.publish(name, pack)
 
         return pack

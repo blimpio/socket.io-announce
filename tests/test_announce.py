@@ -8,7 +8,7 @@ from announce import Announce
 
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
-        self.announce = Announce(_debug_mode=True)
+        self.announce = Announce(_test_mode=True)
 
     def compare_payloads(self, expected, result_text):
         result = json.loads(result_text)
@@ -117,7 +117,7 @@ class TestAnnounce(BaseTestCase):
 
 
     def test_send_in_namespace(self):
-        self.announce = Announce(_debug_mode=True, namespace='namespace')
+        self.announce = Announce(_test_mode=True, namespace='namespace')
 
         expected = {
             'nodeId': 149241983,
@@ -135,7 +135,7 @@ class TestAnnounce(BaseTestCase):
 
 
     def test_send_in_namespace_with_room(self):
-        self.announce = Announce(_debug_mode=True, namespace='namespace')
+        self.announce = Announce(_test_mode=True, namespace='namespace')
 
         expected = {
             'nodeId': 149241983,
@@ -153,7 +153,7 @@ class TestAnnounce(BaseTestCase):
 
 
     def test_emit_in_namespace(self):
-        self.announce = Announce(namespace='namespace')
+        self.announce = Announce(_test_mode=True, namespace='namespace')
 
         expected = {
             'nodeId': 149241983,
@@ -172,7 +172,7 @@ class TestAnnounce(BaseTestCase):
 
 
     def test_emit_in_namespace_with_room(self):
-        self.announce = Announce(_debug_mode=True, namespace='namespace')
+        self.announce = Announce(_test_mode=True, namespace='namespace')
 
         expected = {
             'nodeId': 149241983,
