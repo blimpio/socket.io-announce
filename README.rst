@@ -1,9 +1,13 @@
-socket.io-announce in Python |Build Status|
-===========================================
+socket.io-announce in Python
+============================
+
+.. image:: https://travis-ci.org/GetBlimp/socket.io-announce.png?branch=master
+    :target: https://travis-ci.org/GetBlimp/socket.io-announce
+
 
 Lightweight infrastructure broadcast for use with Socket.io RedisStore.
 This was ported from `dshaw/socket.io-announce`_ a Node.js project.
-Thanks to [@dshaw](https://twitter.com/dshaw).
+Thanks `@dshaw`_.
 
 Install
 -------
@@ -74,5 +78,4 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 .. _dshaw/socket.io-announce: https://github.com/dshaw/socket.io-announce
 
-.. |Build Status| image:: https://travis-ci.org/GetBlimp/socket.io-announce.png?branch=master
-   :target: https://travis-ci.org/GetBlimp/socket.io-announce
+.. _@dshaw: https://twitter.com/dshaw
