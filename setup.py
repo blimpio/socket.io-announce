@@ -3,7 +3,7 @@ import os
 from setuptools import setup
 
 
-with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
+with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     long_description = readme.read()
 
 
@@ -15,7 +15,7 @@ setup(
     description='Socket.io multi-process announcement channel ported to Python',
     license='MIT',
     keywords='websockets nodejs socket.io socketio',
-    url='http://github.com/gcollazo/socket.io-announce',
+    url='https://github.com/GetBlimp/socket.io-announce',
     packages=['announce'],
     install_requires=[
         'redis>=2.9.1',
