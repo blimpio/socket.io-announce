@@ -44,7 +44,7 @@ announce.emit('episode', {'url': 'http://www.nodeup.com/twentyfour'}, room='node
 
 (The MIT License)
 
-Copyright (c) 2014 Giovanni Collazo
+Copyright (c) 2014 Blimp LLC - Giovanni Collazo
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
