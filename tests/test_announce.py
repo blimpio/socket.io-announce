@@ -1,5 +1,8 @@
 import unittest
 import json
+import logging
+
+log = logging.getLogger(__name__)
 
 from announce import Announce
 
@@ -12,7 +15,6 @@ class TestAnnounce(unittest.TestCase):
 
         result = json.loads(self.announce.emit(
             'status', {'msg': 'This is a test', 'countdown': 1000}))
-
 
         self.assertEqual(expected['args'][0], result['args'][0])
         self.assertEqual(len(expected['args'][1]), len(result['args'][1]))

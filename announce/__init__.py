@@ -2,7 +2,7 @@ import json
 import uuid
 import redis
 
-from .parser import encode_packet
+from .packet import encode as encode_packet
 
 class Announce(object):
     def __init__(self, *args, **kwargs):
@@ -76,15 +76,22 @@ if __name__ == '__main__':
     """
     Sample usage
     """
-    a = Announce()
-    a.emit('alert', {'msg': 'This is Hello'})
-    a.emit('alert', {'msg': 'This is Hello'}, room='room')
-    a.send('Alow')
-    a.send('Alow', room='room')
+    a = Announce(host='162.243.214.116',
+                 password='HLDTSmQUzkN2Zw5AaFDntwajLTvrWsFw@')
 
-    b = Announce(namespace='/namespace')
-    b.emit('alert', {'msg': 'This is Hello'})
-    b.emit('alert', {'msg': 'This is Hello'}, room='room')
-    b.send('Alow')
-    b.send('Alow', room='room')
+    a.emit('message', {'greeting': 'Hello World'}, room='u1')
+    # a.emit('alert', {'msg': 'This is Hello'})
+    # a.emit('alert', {'msg': 'This is Hello'}, room='room')
+    # a.send('Alow')
+    # a.send('Alow', room='room')
+
+
+    # b = Announce(host='162.243.214.116',
+    #              password='HLDTSmQUzkN2Zw5AaFDntwajLTvrWsFw@',
+    #              namespace='/namespace')
+
+    # b.emit('alert', {'msg': 'This is Hello'})
+    # b.emit('alert', {'msg': 'This is Hello'}, room='room')
+    # b.send('Alow')
+    # b.send('Alow', room='room')
 

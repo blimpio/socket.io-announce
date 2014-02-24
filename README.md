@@ -1,4 +1,4 @@
-# socket.io-announce
+# socket.io-announce in Python
 
 Lightweight infrastructure broadcast for use with Socket.io RedisStore. This was ported from [dshaw/socket.io-announce](https://github.com/dshaw/socket.io-announce) a Node.js project. Thanks to [@dshaw](https://twitter.com/dshaw).
 
