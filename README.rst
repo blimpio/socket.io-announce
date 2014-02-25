@@ -41,7 +41,7 @@ Target socket.io rooms.
 
     announce.send('Yoyo yo!', room='boardroom')
     announce.emit('tweet', {'id': '1', 'user': '@dshaw', 'text': 'Keeping things small...'}, room='nodeup')
-
+    
 Target socket.io namespaces (with rooms too).
 ---------------------------------------------
 
@@ -49,6 +49,21 @@ Target socket.io namespaces (with rooms too).
 
     announce = Announce(namespace='/namespace')
     announce.emit('episode', {'url': 'http://www.nodeup.com/twentyfour'}, room='node up')
+
+Custom JSON Serialization
+-------------------------
+
+If you run into JSON errors trying to serialize data types like date/time/timedelta, decimal, generators, or any other
+that is not supported by the standard json library, you'll probably need to use a custom JSONEncoder.
+
+.. code:: python
+    
+    def custom_json_dumps(data):
+        return json.dumps(data, cls=CustomJSONEncoder)
+    
+    announce = Announce(namespace='/namespace', json_dumps=custom_json_dumps)
+    announce.emit('episode', {'date': datetime.datetime.today()}, room='node up')
+
 
 License
 -------
