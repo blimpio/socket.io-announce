@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
 import unittest
 import json
 import logging
@@ -50,6 +53,15 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(expected_payload[key], result_payload[key])
 
 
+    def check_text_payload(self, expected, result_text):
+        result = json.loads(result_text)
+
+        expected_msg_parts = expected['args'][1].split(':', 3)
+        result_msg_parts = result['args'][1].split(':', 3)
+
+        self.assertEqual(expected_msg_parts[3], result_msg_parts[3])
+
+
 class TestAnnounce(BaseTestCase):
     def test_emit(self):
         expected = {
@@ -69,6 +81,23 @@ class TestAnnounce(BaseTestCase):
         self.check_json_payload(expected, result_text)
 
 
+    def test_emit_with_unicode(self):
+        expected = {
+            'nodeId': 197520823,
+            'args': [
+                '',
+                '5:::{"name": "message", "args": [{"msg": "Hello, 世界! áéíóúñüø"}]}',
+                None,
+                []
+            ]
+        }
+
+        result_text = self.announce.emit('message', {'msg': 'Hello, 世界! áéíóúñüø'})
+
+        self.compare_payloads(expected, result_text)
+        self.check_json_payload(expected, result_text)
+
+
     def test_send(self):
         expected = {
             'nodeId': 286326561,
@@ -83,6 +112,24 @@ class TestAnnounce(BaseTestCase):
         result_text = self.announce.send('Hello, world!')
 
         self.compare_payloads(expected, result_text)
+        self.check_text_payload(expected, result_text)
+
+
+    def test_send_with_unicode(self):
+        expected = {
+            'nodeId': 286326561,
+            'args': [
+                '',
+                '3:::Hello, 世界! áéíóúñüø',
+                None,
+                []
+            ]
+        }
+
+        result_text = self.announce.send('Hello, 世界! áéíóúñüø')
+
+        self.compare_payloads(expected, result_text)
+        self.check_text_payload(expected, result_text)
 
 
     def test_send_in_room(self):
@@ -99,6 +146,7 @@ class TestAnnounce(BaseTestCase):
         result_text = self.announce.send('Hello world!', room='room')
 
         self.compare_payloads(expected, result_text)
+        self.check_text_payload(expected, result_text)
 
 
     def test_emit_in_room(self):
@@ -134,6 +182,7 @@ class TestAnnounce(BaseTestCase):
         result_text = self.announce.send('Hello world!')
 
         self.compare_payloads(expected, result_text)
+        self.check_text_payload(expected, result_text)
 
 
     def test_send_in_namespace_with_room(self):
@@ -152,6 +201,7 @@ class TestAnnounce(BaseTestCase):
         result_text = self.announce.send('Hello world!', room='room')
 
         self.compare_payloads(expected, result_text)
+        self.check_text_payload(expected, result_text)
 
 
     def test_emit_in_namespace(self):
