@@ -48,7 +48,7 @@ Target socket.io namespaces (with rooms too).
 .. code:: python
 
     announce = Announce(namespace='/namespace')
-    announce.emit('episode', {'url': 'http://www.nodeup.com/twentyfour'}, room='node up')
+    announce.emit('episode', {'url': 'http://www.nodeup.com/twentyfour'}, room='nodeup')
 
 Custom JSON Serialization
 -------------------------
@@ -62,7 +62,7 @@ that is not supported by the standard json library, you'll probably need to use 
         return json.dumps(data, cls=CustomJSONEncoder)
     
     announce = Announce(namespace='/namespace', json_dumps=custom_json_dumps)
-    announce.emit('episode', {'date': datetime.datetime.today()}, room='node up')
+    announce.emit('episode', {'date': datetime.datetime.today()}, room='nodeup')
 
 
 License
